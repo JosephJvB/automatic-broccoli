@@ -7,7 +7,7 @@ export class Solver {
     this.board = board;
   }
 
-  solve(): boolean {
+  fillNextEmpty(): boolean {
     this.turns++;
     const next = this.nextEmpty;
     if(!next) {
@@ -16,13 +16,14 @@ export class Solver {
     const {r, c} = next;
     for(let i = 1; i < 10; i++) {
       const valid = this.isValid(next, i);
-      if(!valid) continue; // if number not valid in nextEmpty, try number++
+      if(!valid) continue; // if number not valid in nextEmpty, try cellvalue++
       this.board[r][c] = i;
-      if(this.solve()) {
-        return true;
-      };
+      // start next closure
+      // pass success back up the closure stack
+      // once first stack returns true, all empty spaces are filled
+      if(this.fillNextEmpty()) return true;
     }
-    // tried all numbers in a cell and none were valid, backtrack
+    // tried all numbers in a cell and none were valid, go back to previous closure, and try cellvalue++
     this.board[r][c] = 0;
     return false;
   }
@@ -57,5 +58,26 @@ export class Solver {
       if(n == 0) return {r, c};
     }
     return null;
+  }
+
+  // check result after all empty spaces have been filled
+  get isValidSolution(): boolean {
+    for(let r = 0; r < 9; r++)
+    for(let c = 0; c < 9; c++) {
+      const cell = {r, c};
+      const val = this.board[r][c];
+      if(val == 0) {
+        console.log('empty space still @', cell);
+        return false;
+      }
+      this.board[r][c] = -1; // reset to pretend we are placing the value in the cell
+      const valid = this.isValid(cell, val)
+      this.board[r][c] = val;
+      if(!valid) {
+        console.log('board invalid @', cell)
+        return false;
+      }
+    }
+    return true;
   }
 }

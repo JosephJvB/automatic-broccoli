@@ -1,5 +1,10 @@
-I'm stuck :(
 https://github.com/kying18/sudoku/blob/main/sudoku.py
+Getting a Mental model for this is hard
+
+I think I've got it,
+But I don't like it. It's hard to reason about. Which is exactly what people say.
+Because there's levels on levels on levels of closures here. (9^9 @ worst case? Not sure)
+It would be way nicer to have some sort of linked listy thing where each solution can go back to the previous solution if a dead end is reached. Then you can more clearly find where your dead end was.
 
 [
   [3, 0, 9, 0, 0, 0, 4, 0, 0],
@@ -35,4 +40,15 @@ https://github.com/kying18/sudoku/blob/main/sudoku.py
   [5, 0, 0,   0, 0, 0,   0, 0, 0],
   [6, 7, 0,   1, 0, 5,   0, 4, 0],
   [1, 0, 9,   0, 0, 0,   2, 0, 0]
+]
+[
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, -1, -1],
+  [-1, -1, -1, -1, -1, -1, -1, 9, 9]
 ]
