@@ -2,13 +2,17 @@ import { Solver } from "./solver";
 import board from './data.json';
 
 const solver = new Solver(board);
-console.log('init')
-console.log(solver.board)
-const allSpacesFilled = solver.fillNextEmpty();
-if(allSpacesFilled && solver.isValidSolution) {
-  console.log('solved in', solver.turns)
-  console.log(solver.board)
+console.log('init');
+pp();
+solver.fillEmptyRecursive();
+if(!solver.nextEmpty && solver.isValidSolution) {
+  console.log('solved in', solver.turns);
+  pp();
 } else {
-  console.log('unsolved in', solver.turns)
-  console.log(solver.board)
+  console.log('unsolved in', solver.turns);
+  pp();
+}
+
+function pp() {
+  console.log(solver.board.map(r => r.join(' ')));
 }

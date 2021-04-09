@@ -3,29 +3,30 @@ import { CellCoords } from "./interface";
 export class Solver {
   board: number[][];
   turns: number = 0;
+  allFilled: boolean = false;
   constructor(board: number[][]) {
     this.board = board;
   }
 
-  fillNextEmpty(): boolean {
+  fillEmptyRecursive(): void {
     this.turns++;
     const next = this.nextEmpty;
     if(!next) {
-      return true;
+      this.allFilled = true;
+      return;
     }
     const {r, c} = next;
     for(let i = 1; i < 10; i++) {
       const valid = this.isValid(next, i);
       if(!valid) continue; // if number not valid in nextEmpty, try cellvalue++
       this.board[r][c] = i;
-      // start next closure
-      // pass success back up the closure stack
-      // once first stack returns true, all empty spaces are filled
-      if(this.fillNextEmpty()) return true;
+      this.fillEmptyRecursive();
+      // if recursive function returned before setting allFilled, we must reset
+      if(!this.allFilled) {
+        this.board[r][c] = 0;
+      }
     }
-    // tried all numbers in a cell and none were valid, go back to previous closure, and try cellvalue++
-    this.board[r][c] = 0;
-    return false;
+    return;
   }
 
   isValid({r, c}: CellCoords, val: number): boolean {
@@ -70,7 +71,7 @@ export class Solver {
         console.log('empty space still @', cell);
         return false;
       }
-      this.board[r][c] = -1; // reset to pretend we are placing the value in the cell
+      this.board[r][c] = 0; // reset to pretend we are placing the value in the cell
       const valid = this.isValid(cell, val)
       this.board[r][c] = val;
       if(!valid) {
